@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/listData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/checkBoxSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Send" />
+
+        <CheckBox
+            android:id="@+id/checkBoxReceive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Receive" />
+
+        <CheckBox
+            android:id="@+id/checkBoxParamVol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="ParamVol" />
+
+        <CheckBox
+            android:id="@+id/checkBoxIntentVol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="IntentVol" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_toStartOf="@id/listData">
+
+        <TextView
+            android:id="@+id/revView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Engine Revs" />
+
+        <SeekBar
+            android:id="@+id/revBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="25"
+            android:paddingBottom="10px"/>
+
+        <TextView
+            android:id="@+id/speedView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed" />
+
+        <SeekBar
+            android:id="@+id/speedBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="25"
+            android:paddingBottom="10px"/>
+
+        <TextView
+            android:id="@+id/battView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Battery Voltage" />
+
+        <TextView
+            android:id="@+id/tempView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Temperature" />
+
+        <TextView
+            android:id="@+id/distView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Distance" />
+
+        <TextView
+            android:paddingTop="10px"
+            android:id="@+id/effectView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Effect" />
+
+        <SeekBar
+            android:id="@+id/effectBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="25"
+            android:paddingBottom="10px"/>
+
+        <TextView
+            android:paddingTop="10px"
+            android:id="@+id/volumeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volume" />
+
+        <SeekBar
+            android:id="@+id/volumeBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="25"
+            android:paddingBottom="10px"/>
+
+        <TextView
+            android:paddingTop="10px"
+            android:id="@+id/staticVolumeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Static Volume" />
+
+        <SeekBar
+            android:id="@+id/staticVolumeBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="25"
+            android:secondaryProgress="10"
+            android:paddingBottom="10px"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        >
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/debugDriverView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#80800000"
+            android:text="Sent Messages" />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/debugReceiverView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#80008000"
+            android:text="Received Messages" />
+
+        <TextView
+            android:id="@+id/debugVolView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#80008000"
+            android:text="Volume" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonCan"
+            android:onClick="testBroadcastCan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test CAN BR" />
+
+        <Button
+            android:id="@+id/buttonVol"
+            android:onClick="testBroadcastVol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test VOL BR" />
+
+    </LinearLayout>
+
+</RelativeLayout>

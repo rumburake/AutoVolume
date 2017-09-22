@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="4"
+    android:rowCount="2">
+
+    <FrameLayout
+        android:id="@+id/topLeftPanel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="2"
+        android:layout_rowWeight="1"
+        android:layout_margin="8dp"
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/textViewRevTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="Engine Revs" />
+
+            <SeekBar
+                android:id="@+id/seekBarRev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewRevTitle" />
+
+            <TextView
+                android:id="@+id/textViewRev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/seekBarRev"
+                android:text="0 RPM" />
+
+            <TextView
+                android:id="@+id/textViewRevMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/seekBarRev"
+                android:text="MAX RPM" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/textViewSpeedTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:text="Vehicle Speed" />
+
+            <SeekBar
+                android:id="@+id/seekBarSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewSpeedTitle" />
+
+            <TextView
+                android:id="@+id/textViewSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/seekBarSpeed"
+                android:text="0 km/h" />
+
+            <TextView
+                android:id="@+id/textViewSpeedMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/seekBarSpeed"
+                android:text="MAX km/h" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/topRightPanel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="2"
+        android:layout_rowWeight="1"
+        android:layout_margin="8dp"
+        android:layout_column="2"
+        android:layout_columnSpan="2"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+        <TextView
+            android:id="@+id/textViewEffectTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:text="Effect"
+            />
+
+        <SeekBar
+            android:id="@+id/seekBarEffect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewEffectTitle"
+            />
+
+        <TextView
+            android:id="@+id/textViewEffect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/seekBarEffect"
+            android:text="0"
+            />
+
+        <TextView
+            android:id="@+id/textViewEffectMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/seekBarEffect"
+            android:text="MAX"
+            />
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        ></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/bottomPanel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="2"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:layout_columnSpan="2"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:id="@+id/textViewVolumeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Volume"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/progressBarVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_below="@id/textViewVolumeTitle"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewVolume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/progressBarVolume"
+                    android:text="0"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewVolumeMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/progressBarVolume"
+                    android:text="MAX"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:id="@+id/textViewOutputTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Output"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/progressBarOutput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_below="@id/textViewOutputTitle"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewOutput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/progressBarOutput"
+                    android:text="0 %"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewOutputMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/progressBarOutput"
+                    android:text="100 %"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        >
+
+        <!-- TEST HERE -->
+
+        <LinearLayout
+            android:visibility="invisible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Test Vol Br"
+                android:onClick="testBroadcastVol"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Test Can Br"
+                android:onClick="testBroadcastCan"/>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</GridLayout>
