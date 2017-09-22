@@ -10,19 +10,22 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 
 public class VolumeService extends Service implements CanBusReceiver.Callback {
     private static final int MAX_REV = 5000; // RPM
     private static final int MAX_SPEED = 200; // km/h
-    private static final int MAX_EFFECT = 33; // effect level
+    private static final int MAX_EFFECT = 9; // effect level
 
-    private static final float REV_FACTOR = 1.0f;
+    private static final float REV_FACTOR = 2.0f;
     private static final float SPEED_FACTOR = 0.75f;
+    private static final float EFFECT_AMP = 6.0f;
 
     private static final String VOLUME_PARAMETER_NAME = "av_volume=";
     private static final String MUTE_PARAMETER_NAME = "av_mute=";
     private static final String MAX_VOLUME_PARAMETER_NAME = "cfg_maxvolume=";
     private static final String VOLUME_CHANGED = "com.microntek.VOLUME_CHANGED";
+    private static final String TAG = VolumeService.class.getSimpleName();
 
     private CarManager carManager = null;
     private BroadcastReceiver volumeReceiver = null;
@@ -33,8 +36,6 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     private int speed;
     private boolean revBarChanging;
     private boolean speedBarChanging;
-
-
 
     public int getEffect() {
         return effect;
@@ -60,6 +61,14 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         return Settings.System.getInt(getContentResolver(),MAX_VOLUME_PARAMETER_NAME, 30);
     }
 
+    public int getRev() {
+        return rev;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
     public int getRevMax() {
         return MAX_REV;
     }
@@ -72,8 +81,8 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         if (effect == 0) {
             return 0;
         } else {
-            int revSteps = (int) (rev / (REV_FACTOR * MAX_REV / effect));
-            int speedSteps = (int) (speed / (SPEED_FACTOR * MAX_SPEED / effect));
+            int revSteps = (int) (rev / (REV_FACTOR * MAX_REV / effect / EFFECT_AMP));
+            int speedSteps = (int) (speed / (SPEED_FACTOR * MAX_SPEED / effect / EFFECT_AMP));
             return revSteps + speedSteps;
         }
     }
@@ -132,6 +141,14 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     private final IBinder mBinder = new VolumeBinder();
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (effect == 0) {
+            stopSelf();
+        }
+        return START_STICKY;
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
@@ -139,6 +156,8 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.d(TAG, "Service is UP!");
 
         effect = getSharedPreferences("main", 0).getInt("effect", 0);
 
@@ -166,6 +185,8 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     public void onDestroy() {
         super.onDestroy();
 
+        Log.d(TAG, "Service is DOWN!");
+
         unregisterReceiver(volumeReceiver);
 
         CanBusReceiver.UnregisterCarReceiver(canBusReceiver);
@@ -173,7 +194,6 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
 
         canBusDriver.stop();
     }
-
 
     interface UICallback {
         void updateVolume(int volume, int volumeMax);
@@ -186,6 +206,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
 
     public void register(UICallback uiCallback) {
         muiCallback = uiCallback;
+        setDynamicOutput(getVolume(), getVolumeMax());
     }
 
     public void unregister() {

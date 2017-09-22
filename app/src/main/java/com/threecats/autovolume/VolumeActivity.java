@@ -49,11 +49,12 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
         textViewRev = (TextView)findViewById(R.id.textViewRev);
         textViewRevMax = (TextView)findViewById(R.id.textViewRevMax);
 
+        int rev = mService.getRev();
         int revMax = mService.getRevMax();
 
         seekBarRev.setMax(revMax);
-        seekBarRev.setProgress(0);
-        textViewRev.setText("" + 0 + " RPM");
+        seekBarRev.setProgress(rev);
+        textViewRev.setText("" + rev + " RPM");
         textViewRevMax.setText("" + revMax + " RPM");
 
         seekBarRev.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -82,11 +83,12 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
         textViewSpeed = (TextView)findViewById(R.id.textViewSpeed);
         textViewSpeedMax = (TextView)findViewById(R.id.textViewSpeedMax);
 
+        int speed = mService.getSpeed();
         int speedMax = mService.getSpeedMax();
 
         seekBarSpeed.setMax(speedMax);
-        seekBarSpeed.setProgress(0);
-        textViewSpeed.setText("" + 0 + " km/h");
+        seekBarSpeed.setProgress(speed);
+        textViewSpeed.setText("" + speed + " km/h");
         textViewSpeedMax.setText("" + speedMax + "km/h");
 
         seekBarSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -155,6 +157,8 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mService.setEffect(progress);
                 textViewEffect.setText("" + progress);
+                Intent i = new Intent(VolumeActivity.this, VolumeService.class);
+                startService(i);
             }
 
             @Override
@@ -167,6 +171,9 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
 
             }
         });
+
+        Intent i = new Intent(VolumeActivity.this, VolumeService.class);
+        startService(i);
     }
 
     @Override
