@@ -5,12 +5,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PixelFormat;
 import android.microntek.CarManager;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class VolumeService extends Service implements CanBusReceiver.Callback {
     private static final int MAX_REV = 5000; // RPM
@@ -179,6 +187,8 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         canBusReceiver = CanBusReceiver.RegisterCarReceiver(this);
 
         canBusDriver = new CanBusDriver();
+
+        initOVerlay();
     }
 
     @Override
@@ -191,8 +201,9 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
 
         CanBusReceiver.UnregisterCarReceiver(canBusReceiver);
 
-
         canBusDriver.stop();
+
+        h.removeCallbacks(r);
     }
 
     interface UICallback {
@@ -223,10 +234,84 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         setOutput(output);
     }
 
-    private void setOutput(int output) {
-        if (muiCallback != null) {
-            muiCallback.updateOutput(output);
+    View overlayView;
+    TextView overlayText;
+    ImageView overlayUp;
+    ImageView overlayDown;
+    WindowManager.LayoutParams overlayParams;
+    boolean overlayOn;
+    WindowManager wm;
+    Runnable r;
+
+    private static final int OVERLAY_TIME = 1000;
+
+    void initOVerlay() {
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        overlayView = inflater.inflate(R.layout.overlay, null, false);
+        overlayText = (TextView)overlayView.findViewById(R.id.overlayText);
+        overlayUp = (ImageView)overlayView.findViewById(R.id.overlayUp);
+        overlayDown = (ImageView)overlayView.findViewById(R.id.overlayDown);
+
+        overlayParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+        overlayParams.alpha = 0.5F;
+        overlayParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+        overlayParams.x = 0;
+        overlayParams.y = 0;
+        overlayParams.width = 120;
+        overlayParams.height = 120;
+
+        wm = (WindowManager)getSystemService(WINDOW_SERVICE);
+
+        r = new Runnable() {
+            @Override
+            public void run() {
+                if (overlayOn) {
+                    wm.removeView(overlayView);
+                    overlayOn = false;
+                }
+            }
+
+        };
+
+    }
+
+    void showOverlay() {
+        if (!overlayOn) {
+            overlayOn = true;
+            wm.addView(overlayView, overlayParams);
         }
-        carManager.setParameters(VOLUME_PARAMETER_NAME + output);
+        overlayText.setText("" + currentOutput + "%");
+        if (lastOutputDelta == 0) {
+            overlayUp.setVisibility(View.INVISIBLE);
+            overlayDown.setVisibility(View.INVISIBLE);
+        } else if (lastOutputDelta > 0){
+            overlayUp.setVisibility(View.VISIBLE);
+            overlayDown.setVisibility(View.INVISIBLE);
+        } else {
+            overlayUp.setVisibility(View.INVISIBLE);
+            overlayDown.setVisibility(View.VISIBLE);
+        }
+        h.removeCallbacks(r);
+        h.postDelayed(r, OVERLAY_TIME);
+    }
+
+    Handler h = new Handler();
+
+    private int currentOutput = -1;
+    private int lastOutputDelta = 0;
+
+    private void setOutput(int output) {
+        if (output != currentOutput) {
+            if (currentOutput != -1) {
+                lastOutputDelta = output - currentOutput;
+            }
+            currentOutput = output;
+            showOverlay();
+
+            if (muiCallback != null) {
+                muiCallback.updateOutput(output);
+            }
+            carManager.setParameters(VOLUME_PARAMETER_NAME + output);
+        }
     }
 }
