@@ -8,6 +8,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -37,6 +39,8 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
     SeekBar seekBarSpeed;
     TextView textViewSpeed;
     TextView textViewSpeedMax;
+
+    CheckBox checkBoxMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +180,17 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
         startService(i);
     }
 
+    void setupMonitorUI() {
+        checkBoxMonitor = (CheckBox)findViewById(R.id.checkBoxMonitor);
+        checkBoxMonitor.setChecked(mService.getMonitor());
+        checkBoxMonitor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mService.setMonitor(isChecked);
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -208,6 +223,7 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
             setupOutputUI();
             setupRevUI();
             setupSpeedUI();
+            setupMonitorUI();
 
             mService.register(VolumeActivity.this);
         }

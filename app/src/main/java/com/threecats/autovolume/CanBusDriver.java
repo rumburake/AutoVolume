@@ -7,7 +7,7 @@ import android.util.Log;
 public class CanBusDriver {
     private static final String TAG = CanBusDriver.class.getSimpleName();
 
-    private static final int DELAY = 1000;
+    private static final int POLL_DELAY = 500;
 
     private CarManager carManager;
     private Handler handler;
@@ -20,10 +20,10 @@ public class CanBusDriver {
             @Override
             public void run() {
                 requestCarData();
-                handler.postDelayed(this, DELAY);
+                handler.postDelayed(this, POLL_DELAY);
             }
         };
-        handler.postDelayed(runnable, DELAY);
+        handler.postDelayed(runnable, POLL_DELAY);
     }
 
     public void stop() {

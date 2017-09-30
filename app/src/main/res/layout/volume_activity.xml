@@ -266,26 +266,37 @@
         android:layout_columnWeight="1"
         >
 
-        <!-- TEST HERE -->
-
         <LinearLayout
-            android:visibility="invisible"
+            android:layout_margin="8dp"
+            android:layout_gravity="bottom|end"
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <!-- TEST -->
             <Button
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="Test Vol Br"
                 android:onClick="testBroadcastVol"/>
 
+            <!-- TEST -->
             <Button
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="Test Can Br"
                 android:onClick="testBroadcastCan"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxMonitor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Monitor" />
 
         </LinearLayout>
     </FrameLayout>

@@ -28,6 +28,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     private static final float REV_FACTOR = 2.0f;
     private static final float SPEED_FACTOR = 0.75f;
     private static final float EFFECT_AMP = 6.0f;
+    private static final int TOLERANCE = 1; // tolerance in output volume
 
     private static final String VOLUME_PARAMETER_NAME = "av_volume=";
     private static final String MUTE_PARAMETER_NAME = "av_mute=";
@@ -57,8 +58,23 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
 
     int effect;
 
+    public boolean getMonitor() {
+        return monitor;
+    }
+
+    public void setMonitor(boolean monitor) {
+        this.monitor = monitor;
+        getSharedPreferences("main", 0).edit().putBoolean("monitor", monitor).apply();
+    }
+
+    boolean monitor;
+
     public int getEffectMax() {
         return MAX_EFFECT;
+    }
+
+    public boolean getMute() {
+        return "true".equals(carManager.getParameters(MUTE_PARAMETER_NAME));
     }
 
     public int getVolume() {
@@ -168,6 +184,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         Log.d(TAG, "Service is UP!");
 
         effect = getSharedPreferences("main", 0).getInt("effect", 0);
+        monitor = getSharedPreferences("main", 0).getBoolean("monitor", false);
 
         volumeReceiver = new BroadcastReceiver() {
             @Override
@@ -225,13 +242,15 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     }
 
     void setDynamicOutput(int volume, int volumeMax) {
-        int output = (int)(100F * volume / volumeMax);
-        int gain = calculateGain();
-        output += gain;
-        if (output > 100) {
-            output = 100;
+        if (!getMute()) {
+            int output = (int) (100F * volume / volumeMax);
+            int gain = calculateGain();
+            output += gain;
+            if (output > 100) {
+                output = 100;
+            }
+            setOutput(output);
         }
-        setOutput(output);
     }
 
     View overlayView;
@@ -242,7 +261,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     boolean overlayOn;
     WindowManager wm;
     Runnable r;
-
+    Handler h = new Handler();
     private static final int OVERLAY_TIME = 1000;
 
     void initOVerlay() {
@@ -295,23 +314,31 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         h.postDelayed(r, OVERLAY_TIME);
     }
 
-    Handler h = new Handler();
-
     private int currentOutput = -1;
     private int lastOutputDelta = 0;
 
     private void setOutput(int output) {
         if (output != currentOutput) {
-            if (currentOutput != -1) {
-                lastOutputDelta = output - currentOutput;
+            boolean absorb = false;
+            if (lastOutputDelta > 0 && output < currentOutput && output >= currentOutput - TOLERANCE) {
+                absorb = true;
+            } else if (lastOutputDelta < 0 && output > currentOutput && output <= currentOutput + TOLERANCE) {
+                absorb = true;
             }
-            currentOutput = output;
-            showOverlay();
+            if (!absorb) {
+                if (currentOutput != -1) {
+                    lastOutputDelta = output - currentOutput;
+                }
+                currentOutput = output;
+                if (monitor) {
+                    showOverlay();
+                }
 
-            if (muiCallback != null) {
-                muiCallback.updateOutput(output);
+                if (muiCallback != null) {
+                    muiCallback.updateOutput(output);
+                }
+                carManager.setParameters(VOLUME_PARAMETER_NAME + output);
             }
-            carManager.setParameters(VOLUME_PARAMETER_NAME + output);
         }
     }
 }
