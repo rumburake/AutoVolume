@@ -241,9 +241,23 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         muiCallback = null;
     }
 
+    private int mtcGetRealVolume(int vol, int maxVol)
+    {
+        float perc = 100.0F * vol / maxVol;
+        float att;
+        if (perc < 20.0F) {
+            att = perc * 3.0F / 2.0F;
+        } else if (perc < 50.0F) {
+            att = perc + 10.0F;
+        } else {
+            att = 20.0F + perc * 4.0F / 5.0F;
+        }
+        return (int)att;
+    }
+
     void setDynamicOutput(int volume, int volumeMax) {
         if (!getMute()) {
-            int output = (int) (100F * volume / volumeMax);
+            int output = mtcGetRealVolume(volume, volumeMax);
             int gain = calculateGain();
             output += gain;
             if (output > 100) {
