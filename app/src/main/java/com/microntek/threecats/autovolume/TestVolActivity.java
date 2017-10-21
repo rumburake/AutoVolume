@@ -1,4 +1,4 @@
-package com.threecats.autovolume;
+package com.microntek.threecats.autovolume;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class TestVolActivity extends Activity {
     private static final String TAG = TestVolActivity.class.getName();

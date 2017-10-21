@@ -1,4 +1,4 @@
-package com.threecats.autovolume;
+package com.microntek.threecats.autovolume;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -13,8 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class VolumeActivity extends Activity implements VolumeService.UICallback {
 

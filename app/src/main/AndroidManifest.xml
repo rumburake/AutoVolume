@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.threecats.autovolume">
+    package="com.microntek.threecats.autovolume">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".VolumeActivity"
+            android:name="com.microntek.threecats.autovolume.VolumeActivity"
             android:label="AutoVolume">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AutoVolumeBooter">
+        <receiver android:name="com.microntek.threecats.autovolume.AutoVolumeBooter">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -46,7 +46,7 @@
             </intent-filter>
         </activity-->
 
-        <service android:name=".VolumeService" android:exported="false" />
+        <service android:name="com.microntek.threecats.autovolume.VolumeService" android:exported="false" />
     </application>
 
 </manifest>

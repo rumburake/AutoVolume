@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.threecats.autovolume"
+        applicationId "com.microntek.threecats.autovolume"
         minSdkVersion 21
         targetSdkVersion 22
         versionCode 3

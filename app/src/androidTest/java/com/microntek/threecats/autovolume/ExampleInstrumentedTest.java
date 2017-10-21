@@ -1,4 +1,4 @@
-package com.threecats.autovolume;
+package com.microntek.threecats.autovolume;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.threecats.autovolume", appContext.getPackageName());
+        assertEquals("com.microntek.threecats.autovolume", appContext.getPackageName());
     }
 }

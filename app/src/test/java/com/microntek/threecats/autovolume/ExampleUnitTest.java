@@ -1,4 +1,4 @@
-package com.threecats.autovolume;
+package com.microntek.threecats.autovolume;
 
 import org.junit.Test;
 
