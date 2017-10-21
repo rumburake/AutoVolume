@@ -53,6 +53,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     public void setEffect(int effect) {
         this.effect = effect;
         getSharedPreferences("main", 0).edit().putInt("effect", effect).apply();
+        resetHysteresis();
         setDynamicOutput(getVolume(), getVolumeMax());
     }
 
@@ -234,6 +235,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
 
     public void register(UICallback uiCallback) {
         muiCallback = uiCallback;
+        resetHysteresis();
         setDynamicOutput(getVolume(), getVolumeMax());
     }
 
@@ -330,6 +332,11 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
 
     private int currentOutput = -1;
     private int lastOutputDelta = 0;
+
+    void resetHysteresis() {
+        currentOutput = -1;
+        lastOutputDelta = 0;
+    }
 
     private void setOutput(int output) {
         if (output != currentOutput) {
