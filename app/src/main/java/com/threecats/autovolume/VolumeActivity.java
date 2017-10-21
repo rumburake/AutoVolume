@@ -138,7 +138,7 @@ public class VolumeActivity extends Activity implements VolumeService.UICallback
         int volume = mService.getVolume();
         int volumeMax = mService.getVolumeMax();
 
-        int output = (int) (100F * volume / volumeMax);
+        int output = VolumeService.mtcGetRealVolume(volume, volumeMax);
 
         progressBarOutput.setMax(100);
         progressBarOutput.setProgress(output);

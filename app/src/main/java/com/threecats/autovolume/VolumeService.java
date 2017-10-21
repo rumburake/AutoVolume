@@ -241,7 +241,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         muiCallback = null;
     }
 
-    private int mtcGetRealVolume(int vol, int maxVol)
+    public static int mtcGetRealVolume(int vol, int maxVol)
     {
         float perc = 100.0F * vol / maxVol;
         float att;
@@ -286,7 +286,7 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         overlayDown = (ImageView)overlayView.findViewById(R.id.overlayDown);
 
         overlayParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
-        overlayParams.alpha = 0.5F;
+        overlayParams.alpha = 0.7F;
         overlayParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
         overlayParams.x = 0;
         overlayParams.y = 0;
