@@ -73,7 +73,12 @@ public class CanBusReceiver extends BroadcastReceiver {
                 int rev = (0xFF & data[3]) * 256 + (0xFF & data[4]);
                 bundle.putInt(REV, rev);
 
-                double speed = ((0xFF & data[5]) * 256 + (0xFF & data[6])) * 0.01d;
+                // don't allow erroneous high values when car is stopped
+                // if RPM is 0 then speed will be set to 0 too so no loud surprises
+                double speed = 0;
+                if (rev > 0) {
+                    speed = ((0xFF & data[5]) * 256 + (0xFF & data[6])) * 0.01d;
+                }
                 bundle.putDouble(SPEED, speed);
 
                 double battery = ((0xFF & data[7]) * 256 + (0xFF & data[8])) * 0.01d;
