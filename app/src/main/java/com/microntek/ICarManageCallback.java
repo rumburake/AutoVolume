@@ -1,4 +1,4 @@
-package android.microntek;
+package com.microntek;
 
 import android.os.Binder;
 import android.os.Bundle;

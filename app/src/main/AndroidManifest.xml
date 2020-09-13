@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -25,28 +26,11 @@
         <receiver android:name="com.microntek.threecats.autovolume.AutoVolumeBooter">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
-        <!--activity
-            android:name=".TestVolActivity"
-            android:label="AutoTestVol">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-->
-        <!--activity
-            android:name=".MainActivity"
-            android:label="AutoVolume">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-->
-
-        <service android:name="com.microntek.threecats.autovolume.VolumeService" android:exported="false" />
+        <service android:name="com.microntek.threecats.autovolume.VolumeService" />
     </application>
 
 </manifest>
