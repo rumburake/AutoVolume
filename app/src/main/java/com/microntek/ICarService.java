@@ -1,4 +1,4 @@
-package android.microntek;
+package com.microntek;
 
 import android.os.Binder;
 import android.os.IBinder;
@@ -456,12 +456,12 @@ public interface ICarService extends IInterface {
                     return true;
                 case TRANSACTION_registerCallback /*15*/:
                     data.enforceInterface(DESCRIPTOR);
-                    registerCallback(android.microntek.ICarManageCallback.Stub.asInterface(data.readStrongBinder()));
+                    registerCallback(ICarManageCallback.Stub.asInterface(data.readStrongBinder()));
                     reply.writeNoException();
                     return true;
                 case TRANSACTION_unregisterCallback /*16*/:
                     data.enforceInterface(DESCRIPTOR);
-                    unregisterCallback(android.microntek.ICarManageCallback.Stub.asInterface(data.readStrongBinder()));
+                    unregisterCallback(ICarManageCallback.Stub.asInterface(data.readStrongBinder()));
                     reply.writeNoException();
                     return true;
                 case TRANSACTION_setParameters /*17*/:

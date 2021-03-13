@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AutoVolume</string>
+    <string name="VolumeServiceDescription">Service is now active.</string>
+    <string name="PersistentNotificationChannel">Persistent notification</string>
 </resources>

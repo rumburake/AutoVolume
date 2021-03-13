@@ -1,13 +1,16 @@
 package com.microntek.threecats.autovolume;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PixelFormat;
-import android.microntek.CarManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -19,6 +22,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.microntek.CarManager;
+
+import java.util.Objects;
 
 public class VolumeService extends Service implements CanBusReceiver.Callback {
     private static final int MAX_REV = 5000; // RPM
@@ -45,6 +52,8 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
     private int speed;
     private boolean revBarChanging;
     private boolean speedBarChanging;
+    private boolean mServiceInitialized;
+    private boolean mForceRestart;
 
     public int getEffect() {
         return effect;
@@ -163,13 +172,24 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         }
     }
 
-    private final IBinder mBinder = new VolumeBinder();
+    private final VolumeBinder mBinder = new VolumeBinder();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+
         if (effect == 0) {
-            stopSelf();
+            //stopSelf();
         }
+
+        if (mServiceInitialized) {
+            return START_STICKY;
+        }
+
+        startForeground(1556, createNotification());
+        mServiceInitialized = true;
+        mForceRestart = true;
+
         return START_STICKY;
     }
 
@@ -183,6 +203,9 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         super.onCreate();
 
         Log.d(TAG, "Service is UP!");
+
+        mServiceInitialized = false;
+        mForceRestart = false;
 
         effect = getSharedPreferences("main", 0).getInt("effect", 0);
         monitor = getSharedPreferences("main", 0).getBoolean("monitor", false);
@@ -209,11 +232,38 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         initOVerlay();
     }
 
+    private Notification createNotification() {
+        Notification.Builder notification;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "VolumeService";
+
+            NotificationChannel channel = new NotificationChannel(channelId, getString(R.string.PersistentNotificationChannel), NotificationManager.IMPORTANCE_NONE);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
+
+            notification = new Notification.Builder(this, channelId);
+        } else {
+            notification = new Notification.Builder(this);
+        }
+
+        return notification.setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.VolumeServiceDescription))
+                .setOngoing(true)
+                .build();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        Log.d(TAG, "Service is DOWN!");
+        if (mForceRestart) {
+            VolumeServiceWatchdog.scheduleServiceRestart(this);
+        }
+
+        if (mServiceInitialized) {
+            mServiceInitialized = false;
+        }
 
         unregisterReceiver(volumeReceiver);
 
@@ -222,6 +272,8 @@ public class VolumeService extends Service implements CanBusReceiver.Callback {
         canBusDriver.stop();
 
         h.removeCallbacks(r);
+
+        Log.d(TAG, "Service is DOWN!");
     }
 
     interface UICallback {

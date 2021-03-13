@@ -1,4 +1,4 @@
-package android.microntek;
+package com.microntek;
 
 public class IRTable {
     public static final int IR_AB = 363;

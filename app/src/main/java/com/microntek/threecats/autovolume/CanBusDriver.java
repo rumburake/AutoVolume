@@ -1,8 +1,9 @@
 package com.microntek.threecats.autovolume;
 
-import android.microntek.CarManager;
 import android.os.Handler;
 import android.util.Log;
+
+import com.microntek.CarManager;
 
 public class CanBusDriver {
     private static final String TAG = CanBusDriver.class.getSimpleName();
