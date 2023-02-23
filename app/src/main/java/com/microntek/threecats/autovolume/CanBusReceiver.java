@@ -78,9 +78,14 @@ public class CanBusReceiver extends BroadcastReceiver {
                 double speed = 0;
                 if (rev > 0) {
                     speed = ((0xFF & data[5]) * 256 + (0xFF & data[6])) * 0.01d;
+                    
+                    // some cars are jumping to 327km/h when stopped, set to 0 too
+                    if (rev < 3000 && speed == 327) {
+                        speed = 0;
+                    }
                 }
                 bundle.putDouble(SPEED, speed);
-
+                
                 double battery = ((0xFF & data[7]) * 256 + (0xFF & data[8])) * 0.01d;
                 bundle.putDouble(BATT, battery);
 
