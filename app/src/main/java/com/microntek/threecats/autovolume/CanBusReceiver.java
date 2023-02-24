@@ -80,7 +80,7 @@ public class CanBusReceiver extends BroadcastReceiver {
                     speed = ((0xFF & data[5]) * 256 + (0xFF & data[6])) * 0.01d;
                     
                     // some cars are jumping to 327km/h when stopped, set to 0 too
-                    if (rev < 3000 && speed == 327) {
+                    if (rev < 3000 && speed > 320.00) {
                         speed = 0;
                     }
                 }
