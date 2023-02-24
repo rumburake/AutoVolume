@@ -2,12 +2,13 @@ package com.microntek.threecats.autovolume;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.microntek.CarManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.microntek.CarManager;
 
 public class TestVolActivity extends Activity {
     private static final String TAG = TestVolActivity.class.getName();

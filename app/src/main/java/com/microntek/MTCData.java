@@ -1,4 +1,4 @@
-package android.microntek;
+package com.microntek;
 
 public class MTCData {
     public static final int MAX_BALANCE = 28;

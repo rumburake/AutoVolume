@@ -216,6 +216,8 @@ public class MainActivity extends Activity implements CanBusReceiver.Callback, C
         staticVolumeView.setText("Static Volume: " + staticVolume);
 
         debugVolView = (TextView) findViewById(R.id.debugVolView);
+
+        this.startService(new Intent(this, VolumeService.class));
     }
 
     private void switchSend(boolean on) {
